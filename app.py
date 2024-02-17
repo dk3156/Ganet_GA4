@@ -4,9 +4,14 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 #read
-df = pd.read_csv('ga_final.csv')
-df['date_format'] = pd.to_datetime(df['date'], format='%Y%m%d')
-df['start_time'] = pd.to_datetime(df['visitStartTime'], unit='s')
+@st.cache_data
+def load_data():
+    df = pd.read_csv('ga_final.csv')
+    df['date_format'] = pd.to_datetime(df['date'], format='%Y%m%d')
+    df['start_time'] = pd.to_datetime(df['visitStartTime'], unit='s')
+    return df
+
+df = load_data()
 #draw
 def mau_chart():
     #analyze

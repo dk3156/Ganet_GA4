@@ -3,9 +3,14 @@ import pandas as pd
 import plotly.express as px
 
 #read
-df = pd.read_csv('ga_final.csv')
-df['date_format'] = pd.to_datetime(df['date'], format='%Y%m%d')
-df['start_time'] = pd.to_datetime(df['visitStartTime'], unit='s')
+@st.cache_data
+def load_data():
+    df = pd.read_csv('ga_final.csv')
+    df['date_format'] = pd.to_datetime(df['date'], format='%Y%m%d')
+    df['start_time'] = pd.to_datetime(df['visitStartTime'], unit='s')
+    return df
+
+df = load_data()
 
 def get_monthly():
     date_channel = df[['date_format', 'channelGrouping', 'fullVisitorId']]
