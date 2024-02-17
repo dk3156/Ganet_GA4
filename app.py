@@ -3,6 +3,16 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
+
+#titles  
+st.set_page_config(
+        page_icon="💎",
+        page_title="팀 가넷 대시보드 💎",
+        layout="wide",
+    )
+#페이지 헤더, 서브헤더
+st.header('GA 데이터 분석 대시보드 💎')
+
 #read
 @st.cache_data
 def load_data():
@@ -10,9 +20,9 @@ def load_data():
     df['date_format'] = pd.to_datetime(df['date'], format='%Y%m%d')
     df['start_time'] = pd.to_datetime(df['visitStartTime'], unit='s')
     return df
-
 df = load_data()
 #draw
+@st.cache_data
 def mau_chart():
     #analyze
     date_df = df[['fullVisitorId', 'date_format']]
@@ -40,6 +50,7 @@ def mau_chart():
     )
     #show
     st.plotly_chart(fig, use_container_width=True, height=400)
+@st.cache_data
 def cc_chart():
     original = df[['date_format', 'fullVisitorId']]
     temp = original['date_format'].dt.year.astype(str) + '-' + original['date_format'].dt.month.astype(str)
@@ -155,6 +166,7 @@ def cc_chart():
         legend_x=0.99
     )
     st.plotly_chart(fig, use_container_width=True, height=400)
+@st.cache_data
 def ecdf_chart():
     from datetime import datetime
     train_df2 = df[['fullVisitorId', 'date_format', 'start_time']]
@@ -181,6 +193,7 @@ def ecdf_chart():
 
     fig = px.ecdf(ecdf, x='max_min_minus')
     st.plotly_chart(fig, use_container_width=True, height=400)
+@st.cache_data
 def retention_chart():
     week_df = df[['fullVisitorId', 'date_format', 'start_time']]
     week_df['year'] = week_df['date_format'].dt.isocalendar().year
@@ -218,6 +231,7 @@ def retention_chart():
         legend_x=0.99
     )
     st.plotly_chart(fig, use_container_width=True, height=600)
+@st.cache_data
 def avg_weekly_chart(start_week:str, end_week:str):
     # 전체 52주
     num_of_weeks = int((pd.to_datetime(end_week) - pd.to_datetime(start_week)) / np.timedelta64(1, 'W'))
@@ -254,15 +268,6 @@ def avg_weekly_chart(start_week:str, end_week:str):
                     aspect='auto',
                     labels={'x': '요일', 'y': '시간'})
     st.plotly_chart(fig, use_container_width=True, height=600)
-
-#titles  
-st.set_page_config(
-        page_icon="💎",
-        page_title="팀 가넷 대시보드 💎",
-        layout="wide",
-    )
-#페이지 헤더, 서브헤더
-st.header('GA 데이터 분석 대시보드 💎')
 
 # 대시보드
 col1, col2, col3 = st.columns([2, 2, 1])
