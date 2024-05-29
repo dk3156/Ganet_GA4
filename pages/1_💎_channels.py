@@ -19,7 +19,7 @@ def load_data():
 
 df = load_data()
 
-@st.cache_data
+# @st.cache_data
 def get_monthly():
     date_channel = df[['date_format', 'channelGrouping', 'fullVisitorId']]
     date_channel.columns = ['date', 'channelGrouping', 'fullVisitorId']
@@ -34,19 +34,19 @@ def get_monthly():
     channel_1611 = mon_chan.loc['2016-11',].reset_index()
     mon_chan = mon_chan.reset_index()
     return mon_chan, channel_1610, channel_1611
-@st.cache_data
+# @st.cache_data
 def monthly_bar_chart(mon_chan:pd.DataFrame):
     #draw
     fig = px.bar(mon_chan, x='monthly' , y='fullVisitorId', color='channelGrouping', barmode='group')
     fig.update_layout(xaxis_title='monthly', yaxis_title='visitors')
     st.plotly_chart(fig, use_container_width=True, height=600)
-@st.cache_data
+# @st.cache_data
 def pie_chart_one(channel_1610:pd.DataFrame):
     #draw
     fig = px.sunburst(channel_1610, path=['channelGrouping'], values='fullVisitorId')
     fig.update_traces(textinfo="label+percent parent")
     st.plotly_chart(fig, use_container_width=True, height=600)
-@st.cache_data
+# @st.cache_data
 def pie_chart_two(channel_1611:pd.DataFrame):
     #draw
     fig = px.sunburst(channel_1611, path=['channelGrouping'], values='fullVisitorId')
