@@ -22,7 +22,7 @@ def load_data():
     return df
 df = load_data()
 #draw
-# @st.cache_data
+@st.cache_data
 def mau_chart():
     #analyze
     date_df = df[['fullVisitorId', 'date_format']]
@@ -49,7 +49,7 @@ def mau_chart():
         legend_x=0.99
     )
     #show
-    st.plotly_chart(fig, use_container_width=True, height=400)
+    return st.plotly_chart(fig, use_container_width=True, height=400)
 # @st.cache_data
 def cc_chart():
     original = df[['date_format', 'fullVisitorId']]
