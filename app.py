@@ -22,7 +22,7 @@ def load_data():
     return df
 df = load_data()
 #draw
-@st.cache_data
+# @st.cache_data
 def mau_chart():
     #analyze
     date_df = df[['fullVisitorId', 'date_format']]
